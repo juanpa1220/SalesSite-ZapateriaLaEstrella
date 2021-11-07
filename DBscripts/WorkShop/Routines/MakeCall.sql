@@ -1,0 +1,21 @@
+CREATE PROCEDURE MakeCall
+
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION
+		DECLARE @giftData TABLE(Id int,Usuario varchar(50),Contacto varchar(50))
+		DECLARE @cant int;
+		DECLARE @c INT = 0;
+		INSERT INTO @giftData Exec GetUserContact
+
+		SELECT * FROM @giftData FOR JSON AUTO
+
+
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		SELECT ERROR_MESSAGE()
+		ROLLBACK
+	END CATCH
+END
